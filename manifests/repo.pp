@@ -24,7 +24,7 @@
 # * Phil Fenstermacher <mailto:phillip.fenstermacher@gmail.com>
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
-class curator::repo {
+class cirrus_curator::repo {
 
   case $::osfamily {
     'Debian': {

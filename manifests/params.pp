@@ -1,9 +1,9 @@
-# Class curator::params
+# Class cirrus_curator::params
 #
 # Default configuration for curator module
 #
-class curator::params {
-  $ensure       = '4.1.0'
+class cirrus_curator::params {
+  $ensure       = 'latest'
   $package_name = 'elasticsearch-curator'
   $provider     = 'pip'
   $manage_repo  = false

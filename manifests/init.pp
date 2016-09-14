@@ -1,4 +1,4 @@
-# == Class: curator
+# == Class: cirrus_curator
 #
 # Installs elasticsearch-curator and provides a definition to schedule jobs
 #
@@ -39,7 +39,7 @@
 #       manage_pip => true,
 #     }
 #
-class curator (
+class cirrus_curator (
   $ensure               = $::curator::params::ensure,
   $package_name         = $::curator::params::package_name,
   $provider             = $::curator::params::provider,
