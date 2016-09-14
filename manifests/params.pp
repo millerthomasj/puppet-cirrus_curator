@@ -4,23 +4,26 @@
 #
 class cirrus_curator::params {
   $ensure       = 'latest'
-  $package_name = 'elasticsearch-curator'
+  $package_name = 'python-elasticsearch-curator'
   $provider     = 'pip'
   $manage_repo  = false
   $repo_version = false
 
-  # Defaults used for jobs, set through the class to make it easy to override
-  $bin_file             = '/bin/curator'
-  $host                 = 'localhost'
-  $port                 = 9200
-  $use_ssl              = false
-  $ssl_validate         = false
-  $ssl_certificate_path = undef
-  $http_auth            = false
-  $user                 = undef
-  $password             = undef
-  $jobs                 = {}
-  $logfile              = '/var/log/curator.log'
-  $log_level            = 'INFO'
-  $logformat            = 'default'
+  $config_dir = '/etc/curator'
+  $config_dir_purge = true
+  $config_filename = 'curator.yml'
+  $config_path = "${curator_config_dir}/${curator_config_filename}"
+
+  $config_template = 'cirrus_elasticsearch/curator.yml.erb'
+  $actions_dir = "${curator_config_dir}/actions.d"
+  $config_user = 'root'
+  $config_group = 'root'
+  $cron_hour = 6
+  $cron_minute = 30
+  $cron_month = '*'
+  $cron_monthday = '*'
+  $cron_weekday = '*'
+
+  $client_config = undef
+  $logging_config = undef
 }

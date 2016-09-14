@@ -42,9 +42,9 @@ class cirrus_curator::config (
   $http_password    = undef,
   $timeout          = 30,
   $master_only      = $::cirrus_curator::params::master_only,
-  $log_level        = $::cirrus_curator::params::log_level,
-  $log_file         = $::cirrus_curator::params::log_file,
-  $log_format       = $::cirrus_curator::params::log_format,
+  $log_level        = $::cirrus_curator::params::loglevel,
+  $log_file         = $::cirrus_curator::params::logfile,
+  $log_format       = $::cirrus_curator::params::logformat,
 )
 {
   File {
