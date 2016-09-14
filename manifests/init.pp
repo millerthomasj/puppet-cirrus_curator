@@ -40,25 +40,25 @@
 #     }
 #
 class cirrus_curator (
-  $ensure               = $::curator::params::ensure,
-  $package_name         = $::curator::params::package_name,
-  $provider             = $::curator::params::provider,
-  $bin_file             = $::curator::params::bin_file,
-  $host                 = $::curator::params::host,
-  $port                 = $::curator::params::port,
-  $use_ssl              = $::curator::params::use_ssl,
-  $ssl_validate         = $::curator::params::ssl_validate,
-  $ssl_certificate_path = $::curator::params::ssl_certificate_path,
-  $http_auth            = $::curator::params::http_auth,
-  $user                 = $::curator::params::user,
-  $password             = $::curator::params::password,
-  $jobs                 = $::curator::params::jobs,
-  $logfile              = $::curator::params::logfile,
-  $log_level            = $::curator::params::log_level,
-  $logformat            = $::curator::params::logformat,
-  $manage_repo          = $::curator::params::manage_repo,
-  $repo_version         = $::curator::params::repo_version,
-) inherits curator::params {
+  $ensure               = $::cirrus_curator::params::ensure,
+  $package_name         = $::cirrus_curator::params::package_name,
+  $provider             = $::cirrus_curator::params::provider,
+  $bin_file             = $::cirrus_curator::params::bin_file,
+  $host                 = $::cirrus_curator::params::host,
+  $port                 = $::cirrus_curator::params::port,
+  $use_ssl              = $::cirrus_curator::params::use_ssl,
+  $ssl_validate         = $::cirrus_curator::params::ssl_validate,
+  $ssl_certificate_path = $::cirrus_curator::params::ssl_certificate_path,
+  $http_auth            = $::cirrus_curator::params::http_auth,
+  $user                 = $::cirrus_curator::params::user,
+  $password             = $::cirrus_curator::params::password,
+  $jobs                 = $::cirrus_curator::params::jobs,
+  $logfile              = $::cirrus_curator::params::logfile,
+  $log_level            = $::cirrus_curator::params::log_level,
+  $logformat            = $::cirrus_curator::params::logformat,
+  $manage_repo          = $::cirrus_curator::params::manage_repo,
+  $repo_version         = $::cirrus_curator::params::repo_version,
+) inherits cirrus_curator::params {
 
   if ( $ensure != 'latest' or $ensure != 'absent' ) {
     if versioncmp($ensure, '4.0.0') < 0 {
