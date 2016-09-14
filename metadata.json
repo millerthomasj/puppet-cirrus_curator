@@ -1,0 +1,15 @@
+{
+  "name": "puppet-cirrus_curator",
+  "version": "0.1.0",
+  "author": "puppet",
+  "summary": "Install and configure curator for elasticsearch.",
+  "license": "Apache-2.0",
+  "source": "https://bfd-github.os.cloud.twc.net/tmiller/puppet-cirrus_curator",
+  "project_page": "https://bfd-github.os.cloud.twc.net/tmiller/puppet-cirrus_curator",
+  "issues_url": "https://bfd-github.os.cloud.twc.net/tmiller/puppet-cirrus_curator",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ],
+  "data_provider": null
+}
+
