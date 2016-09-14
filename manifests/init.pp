@@ -1,76 +1,112 @@
-# == Class: cirrus_curator
+# == Class: curator
 #
-# Installs Elastic's Curator, manages the curator.conf file, creates an
-# action.yml file for the actions to be performed by a given Curator job, and
-# adds Curator jobs to cron for scheduled management of Elasticsearch indices.
+# Installs elasticsearch-curator and provides a definition to schedule jobs
+#
 #
 # === Parameters
 #
 # [*ensure*]
-#  String. Specify whether Curator should be installed and, if so, which version.
+#   String.  Version of curator to be installed
+#   Default: latest
+#
+# [*jobs*]
+#
+#   Hash. Manage your jobs in hiera (or manifest).
+#   Default: {}
+#
+# [*manage_repo*]
+#   Boolean. Enable repo management by enabling the official repositories.
+#   Default: false
 #
 # [*provider*]
-#  String. Puppet provider to use to install Curator.
+#   String.  Name of the provider to install the package with.
+#            If not specified will use system's default provider.
+#   Default: undef
 #
-# [*package_name*]
-#  String. Name of package to be installed. Varies by provider.
+# [*repo_version*]
+#   String.  Elastic repositories  are versioned per major release (2, 3)
+#            select here which version you want.
+#   Default: false
 #
-# [*bin_path*]
-#  String. Full path of the Curator binary file. Varies by provider (apt vs pip).
+# === Examples
 #
-# [*config_dir*]
-#  String. Path of Curator's configuration directory.
+# * Installation:
+#     class { 'curator': }
 #
-# [*config_filename*]
-#  String. Name of Curator's YAML configuration file. Used by Curator command line
-#  option '--config' (actually uses a concatenation of config_dir and
-#  config_filename).
+# * Installation with pip:
+#     class { 'curator':
+#       provider   => 'pip',
+#       manage_pip => true,
+#     }
 #
-# [*config_group*]
-#  String. Group to use for ownership of directories and files related to Curator.
-#
-# [*config_user*]
-#  String. User to use for ownership of directores and files related to Curator.
-#  Also determines which user's crontab to use for Curator cronjobs.
-#
-# [*curator_action_files*]
-#  Hash. Primary key of hash must be 'curator_action_files', though all hashes with
-#  this key in the entire Hiera(rchy) will be merged at runtime. Secondary key(s)
-#  are used as the name(s) given to create_resources and should be the name(s) of
-#  action_file(s)/cronjob(s) to be run by Curator. Tertiary keys are defined in
-#  curator/action_file.pp and are used to provide configuration for cronjobs as well
-#  as source OR content for action_files.
-#
-class cirrus_curator (
-  $ensure               = $::cirrus_curator::params::curator_ensure,
-  $provider             = $::cirrus_curator::params::curator_provider,
-  $package_name         = $::cirrus_curator::params::curator_package_name,
-  $bin_path             = $::cirrus_curator::params::curator_bin_path,
-  $config_dir           = $::cirrus_curator::params::curator_config_dir,
-  $config_filename      = $::cirrus_curator::params::curator_config_filename,
-  $config_group         = $::cirrus_curator::params::curator_config_group,
-  $config_user          = $::cirrus_curator::params::curator_config_user,
-  $curator_action_files = hiera_hash(curator_action_files, {}),
-) inherits cirrus_curator::params
-{
-  if ( $ensure != 'latest' ) or ( $ensure != 'absent' ) {
+class curator (
+  $ensure               = $::curator::params::ensure,
+  $package_name         = $::curator::params::package_name,
+  $provider             = $::curator::params::provider,
+  $bin_file             = $::curator::params::bin_file,
+  $host                 = $::curator::params::host,
+  $port                 = $::curator::params::port,
+  $use_ssl              = $::curator::params::use_ssl,
+  $ssl_validate         = $::curator::params::ssl_validate,
+  $ssl_certificate_path = $::curator::params::ssl_certificate_path,
+  $http_auth            = $::curator::params::http_auth,
+  $user                 = $::curator::params::user,
+  $password             = $::curator::params::password,
+  $jobs                 = $::curator::params::jobs,
+  $logfile              = $::curator::params::logfile,
+  $log_level            = $::curator::params::log_level,
+  $logformat            = $::curator::params::logformat,
+  $manage_repo          = $::curator::params::manage_repo,
+  $repo_version         = $::curator::params::repo_version,
+) inherits curator::params {
+
+  if ( $ensure != 'latest' or $ensure != 'absent' ) {
     if versioncmp($ensure, '4.0.0') < 0 {
-      fail('This manifest only supports version 4.0.0 or later of curator')
+      fail('This version of the module only supports version 3.0.0 or later of curator')
     }
   }
 
-  package { $package_name:
-    ensure   => $ensure,
-    provider => $provider,
-    before   => Class['::cirrus_curator::config']
+  case $manage_repo {
+    true: {
+      case $::osfamily {
+        'Debian': {
+          $_package_name = 'python-elasticsearch-curator'
+          $_provider     = 'apt'
+        }
+        'RedHat': {
+          $_package_name = 'python-elasticsearch-curator'
+          $_provider     = 'yum'
+        }
+        default: {
+          $_package_name = 'elasticsearch-curator'
+          $_provider     = 'pip'
+        }
+      }
+    }
+    default: {
+      $_package_name = $package_name
+      $_provider     = $provider
+    }
   }
 
-  class { '::cirrus_curator::config':
-    config_dir   => $config_dir,
-    config_user  => $config_user,
-    config_group => $config_group,
-  }
+  validate_hash($jobs)
+  validate_bool($manage_repo)
 
-#  validate_hash($curator_action_files)
-#  create_resources('cirrus_curator::action_file', $curator_action_files)
+  create_resources('curator::job', $jobs)
+
+  if ($manage_repo == true) {
+    validate_string($repo_version)
+
+    # Set up repositories
+    class { '::curator::repo': } ->
+    package { $_package_name:
+      ensure   => $ensure,
+      provider => $_provider,
+    }
+  } else {
+    package { $_package_name:
+      ensure   => $ensure,
+      provider => $_provider,
+    }
+  }
 }
