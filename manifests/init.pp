@@ -89,10 +89,10 @@ class curator (
     }
   }
 
-  validate_hash($jobs)
+#  validate_hash($jobs)
   validate_bool($manage_repo)
-
-  create_resources('curator::job', $jobs)
+#
+#  create_resources('curator::job', $jobs)
 
   if ($manage_repo == true) {
     validate_string($repo_version)
