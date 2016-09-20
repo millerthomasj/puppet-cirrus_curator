@@ -5,7 +5,7 @@
 class cirrus_curator::params {
   $ensure       = 'latest'
   $package_name = 'python-elasticsearch-curator'
-  $provider     = 'pip'
+  $provider     = 'apt'
   $manage_repo  = false
   $repo_version = false
 

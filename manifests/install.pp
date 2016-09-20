@@ -1,6 +1,6 @@
 class cirrus_curator::install
 {
-  case $cirrus_curator::manage_repo {
+  case ($cirrus_curator::manage_repo) {
     true: {
       case $::osfamily {
         'Debian': {
@@ -22,7 +22,7 @@ class cirrus_curator::install
       $_provider     = $provider
     }
   }
-
+notify { "testing $cirrus_curator::manage_repo": }
   if ($cirrus_curator::manage_repo == true) {
     # Set up repositories
     class { '::cirrus_curator::repo': } ->

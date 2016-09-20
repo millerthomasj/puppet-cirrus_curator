@@ -42,6 +42,8 @@
 
 class cirrus_curator (
   $ensure               = $::cirrus_curator::params::ensure,
+  $provider             = $::cirrus_curator::params::provider,
+  $package_name         = $::cirrus_curator::params::package_name,
   $manage_repo          = $::cirrus_curator::params::manage_repo,
   $repo_version         = $::cirrus_curator::params::repo_version,
   $client_config        = $::cirrus_curator::params::client_config,
