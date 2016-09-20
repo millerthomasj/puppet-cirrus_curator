@@ -55,7 +55,7 @@ actions:
     - filtertype: age
       source: <%= @age_source %>
       direction: older
-      timestring: '<%= @age_timestring %>'
+      <% if @action != 'forcemerge' %>timestring: '<%= @age_timestring %>'<% end %>
       unit: days
       unit_count: <%= @age_older_unit_count %>
       exclude:
