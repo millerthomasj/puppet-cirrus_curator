@@ -46,7 +46,7 @@ define cirrus_curator::action (
   # Optimize Options
   $delay                   = 0,
   $max_num_segments        = 2,
-  $request_timeout         = 43200,
+  $request_timeout         = "",
 
   # Cron Params
   $cron_ensure                  = 'present',
