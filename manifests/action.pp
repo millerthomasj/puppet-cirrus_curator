@@ -37,6 +37,7 @@ define cirrus_curator::action (
   $age_timestring = '%Y.%m.%d',
   $age_older_unit_count = 7,
   $age_younger_unit_count = 14,
+  $enable_cron = false,
   $cron_hour = 6,
   $cron_minute = 30,
   $cron_month = '*',
@@ -57,7 +58,7 @@ define cirrus_curator::action (
     mode    => '0644',
   }
 
-  if ( $disable_action != 'True' ) {
+  if ( $enable_cron ) {
     $_ensure = 'present'
   }
   else {
