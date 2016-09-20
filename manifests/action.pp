@@ -28,16 +28,28 @@
 #
 
 define cirrus_curator::action (
-  $action = undef,
-  $description = undef,
-  $continue_if_exception = 'False',
-  $disable_action = 'False',
-  $pattern_value = 'logstash-',
-  $age_source = 'name',
-  $age_timestring = '%Y.%m.%d',
-  $age_older_unit_count = 7,
-  $age_younger_unit_count = 14,
-  $enable_cron = false,
+  $action,
+  $content                 = undef,
+  $description             = undef,
+  $bin_file                = $::cirrus_curator::bin_file,
+  $config_path             = $::cirrus_curator::config_path,
+  $actions_dir             = $::cirrus_curator::actions_dir,
+
+  # Options for all indexes
+  $prefix                  = 'logstash-',
+  $older_than              = undef,
+  $newer_than              = undef,
+  $time_unit               = 'days',
+  $timestring              = '%Y.%m.%d',
+  $source                  = 'name',
+
+  # Optimize Options
+  $delay                   = 0,
+  $max_num_segments        = 2,
+  $request_timeout         = 43200,
+
+  # Cron Params
+  $cron_ensure                  = 'present',
   $cron_hour = 6,
   $cron_minute = 30,
   $cron_month = '*',
@@ -46,28 +58,28 @@ define cirrus_curator::action (
   $user = 'root',
 )
 {
-  require ::cirrus_curator::config
+  include ::cirrus_curator
 
-  $actionfile_name = "${::cirrus_curator::actions_dir}/${name}.yml"
+  $actionfile_name = "${actions_dir}/${name}.yml"
+
+  if ( $content != undef ) {
+    $_content = $content
+  }
+  else {
+    $_content = template('cirrus_curator/action.yml.erb')
+  }
 
   file { $actionfile_name:
     ensure  => file,
-    content => template('cirrus_curator/action.yml.erb'),
+    content => $_content,
     owner   => $user,
     group   => $user,
     mode    => '0644',
   }
 
-  if ( $enable_cron ) {
-    $_ensure = 'present'
-  }
-  else {
-    $_ensure = 'absent'
-  }
-
   cron { "curator_${name}_cron":
-    ensure   => $_ensure,
-    command  => "${::cirrus_curator::bin_path} --config ${cirrus_curator::params::config_path} ${actionfile_name} >/dev/null",
+    ensure   => $cron_ensure,
+    command  => "${bin_file} --config ${config_path} ${actionfile_name} >/dev/null",
     hour     => $cron_hour,
     minute   => $cron_minute,
     month    => $cron_month,

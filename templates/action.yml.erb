@@ -9,54 +9,54 @@ actions:
       <% if @action == 'alias' %>name: last_week<% end %>
       <% if @action == 'close' %>delete_aliases: False<% end %>
       <% if @action == 'delete_indices' %>ignore_empty_list: True<% end %>
-      <% if @action == 'forcemerge' %>max_num_segments: 2
-      delay: 120<% end %>
-      timeout_override:
-      continue_if_exception: <% if @continue_if_exception == true %>True<% else %>False<% end %>
-      disable_action: <% if @disable_action == true %>True<% else %>False<% end %>
+      <% if @action == 'forcemerge' %>max_num_segments: <%= @max_num_segments %>
+      delay: <%= @delay %><% end %>
+      timeout_override: <%= @request_timeout %>
+      continue_if_exception: False
+      disable_action: False
     <% if @action == 'alias' %>
     add:
       filters:
       - filtertype: pattern
         kind: prefix
-        value: <%= @pattern_value %>
+        value: <%= @prefix %>
         exclude:
       - filtertype: age
-        source: <%= @age_source %>
+        source: <%= @source %>
         direction: older
-        timestring: <%= @age_timestring %>
-        unit: days
-        unit_count: <%= @age_older_unit_count %>
+        timestring: <%= @timestring %>
+        unit: <%= @time_unit %>
+        unit_count: <%= @older_than %>
         exclude:
       - filtertype: age
         direction: younger
-        timestring: '<%= @age_timestring %>'
+        timestring: '<%= @timestring %>'
         unit: days
-        unit_count: <%= @age_younger_unit_count %>
+        unit_count: <%= @newer_than %>
         exclude:
     remove:
       filters:
       - filtertype: pattern
         kind: prefix
-        value: <%= @pattern_value %>
+        value: <%= @prefix %>
       - filtertype: age
-        source: <%= @age_source %>
+        source: <%= @source %>
         direction: older
-        timestring: '<%= @age_timestring %>'
-        unit: days
-        unit_count: <%= @age_younger_unit_count %>
+        timestring: '<%= @timestring %>'
+        unit: <%= @time_unit %>
+        unit_count: <%= @newer_than %>
         exclude:
     <% else %>
     filters:
     - filtertype: pattern
       kind: prefix
-      value: <%= @pattern_value %>
+      value: <%= @prefix %>
       exclude:
     - filtertype: age
-      source: <%= @age_source %>
+      source: <%= @source %>
       direction: older
-      <% if @action != 'forcemerge' %>timestring: '<%= @age_timestring %>'<% end %>
-      unit: days
-      unit_count: <%= @age_older_unit_count %>
+      <% if @action != 'forcemerge' %>timestring: '<%= @timestring %>'<% end %>
+      unit: <%= @time_unit %>
+      unit_count: <%= @older_than %>
       exclude:
     <% end %>
