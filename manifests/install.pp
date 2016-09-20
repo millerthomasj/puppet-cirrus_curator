@@ -22,7 +22,7 @@ class cirrus_curator::install
       $_provider     = $cirrus_curator::provider
     }
   }
-notify { "testing $cirrus_curator::manage_repo": }
+
   if ($cirrus_curator::manage_repo == true) {
     # Set up repositories
     class { '::cirrus_curator::repo': } ->

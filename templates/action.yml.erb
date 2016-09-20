@@ -30,7 +30,7 @@ actions:
         exclude:
       - filtertype: age
         direction: younger
-        timestring: <%= @age_timestring %>
+        timestring: '<%= @age_timestring %>'
         unit: days
         unit_count: <%= @age_younger_unit_count %>
         exclude:
@@ -42,7 +42,7 @@ actions:
       - filtertype: age
         source: <%= @age_source %>
         direction: older
-        timestring: <%= @age_timestring %>
+        timestring: '<%= @age_timestring %>'
         unit: days
         unit_count: <%= @age_younger_unit_count %>
         exclude:
@@ -55,7 +55,7 @@ actions:
     - filtertype: age
       source: <%= @age_source %>
       direction: older
-      timestring: <%= @age_timestring %>
+      timestring: '<%= @age_timestring %>'
       unit: days
       unit_count: <%= @age_older_unit_count %>
       exclude:

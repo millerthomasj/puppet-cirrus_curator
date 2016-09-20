@@ -39,7 +39,7 @@ define cirrus_curator::action (
   $age_younger_unit_count = 14,
   $cron_hour = 6,
   $cron_minute = 30,
-  $cron_month = '*'.
+  $cron_month = '*',
   $cron_monthday = '*',
   $cron_weekday = '*',
   $user = 'root',
@@ -59,7 +59,8 @@ define cirrus_curator::action (
 
   if ( $disable_action != 'True' ) {
     $_ensure = 'present'
-  else
+  }
+  else {
     $_ensure = 'absent'
   }
 
