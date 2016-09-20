@@ -33,14 +33,14 @@ class cirrus_curator::repo {
       }
 
       apt::source { 'curator':
-        location    => "http://packages.elastic.co/curator/${curator::repo_version}/debian",
-        release     => 'stable',
-        repos       => 'main',
-        key         => {
-          id => '46095ACC8548582C1A2699A9D27D666CD88E42B4',
+        location => "http://packages.elastic.co/curator/${curator::repo_version}/debian",
+        release  => 'stable',
+        repos    => 'main',
+        key      => {
+          id     => '46095ACC8548582C1A2699A9D27D666CD88E42B4',
           server => 'pgp.mit.edu'
         },
-        include => {
+        include  => {
           src => false,
           deb => true
         }

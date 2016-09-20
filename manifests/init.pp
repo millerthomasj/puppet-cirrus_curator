@@ -63,6 +63,6 @@ class cirrus_curator (
     validate_string($repo_version)
   }
 
-  class { 'cirrus_curator::install': }->
-  class { 'cirrus_curator::config': }
+  class { '::cirrus_curator::install': }->
+  class { '::cirrus_curator::config': }
 }
