@@ -48,7 +48,7 @@ define cirrus_curator::action (
 {
   require ::cirrus_curator::config
 
-  $actionfile_name = "${::cirrus_curator::actions_dir}/${name}.action.yml"
+  $actionfile_name = "${::cirrus_curator::actions_dir}/${name}.yml"
 
   file { $actionfile_name:
     ensure  => file,
