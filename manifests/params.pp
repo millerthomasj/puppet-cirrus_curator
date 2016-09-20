@@ -9,6 +9,7 @@ class cirrus_curator::params {
   $manage_repo  = false
   $repo_version = false
 
+  $bin_path = '/usr/local/bin/curator'
   $config_dir = '/etc/curator'
   $config_dir_purge = true
   $config_filename = 'curator.yml'

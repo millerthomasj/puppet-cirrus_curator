@@ -1,0 +1,62 @@
+---
+### MANAGED BY PUPPET ###
+actions:
+  1:
+    action: <%= @action %>
+    description: >-
+      <%= @description %>
+    options:
+      <% if @action == 'alias' %>name: last_week<% end %>
+      <% if @action == 'close' %>delete_aliases: False<% end %>
+      <% if @action == 'delete_indices' %>ignore_empty_list: True<% end %>
+      <% if @action == 'forcemerge' %>max_num_segments: 2
+      delay: 120<% end %>
+      timeout_override:
+      continue_if_exception: <% if @continue_if_exception == true %>True<% else %>False<% end %>
+      disable_action: <% if @disable_action == true %>True<% else %>False<% end %>
+    <% if @action == 'alias' %>
+    add:
+      filters:
+      - filtertype: pattern
+        kind: prefix
+        value: <%= @pattern_value %>
+        exclude:
+      - filtertype: age
+        source: <%= @age_source %>
+        direction: older
+        timestring: <%= @age_timestring %>
+        unit: days
+        unit_count: <%= @age_older_unit_count %>
+        exclude:
+      - filtertype: age
+        direction: younger
+        timestring: <%= @age_timestring %>
+        unit: days
+        unit_count: <%= @age_younger_unit_count %>
+        exclude:
+    remove:
+      filters:
+      - filtertype: pattern
+        kind: prefix
+        value: <%= @pattern_value %>
+      - filtertype: age
+        source: <%= @age_source %>
+        direction: older
+        timestring: <%= @age_timestring %>
+        unit: days
+        unit_count: <%= @age_younger_unit_count %>
+        exclude:
+    <% else %>
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: <%= @pattern_value %>
+      exclude:
+    - filtertype: age
+      source: <%= @age_source %>
+      direction: older
+      timestring: <%= @age_timestring %>
+      unit: days
+      unit_count: <%= @age_older_unit_count %>
+      exclude:
+    <% end %>

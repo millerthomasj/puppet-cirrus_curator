@@ -46,6 +46,7 @@ class cirrus_curator (
   $package_name         = $::cirrus_curator::params::package_name,
   $manage_repo          = $::cirrus_curator::params::manage_repo,
   $repo_version         = $::cirrus_curator::params::repo_version,
+  $bin_path             = $::cirrus_curator::params::bin_path,
   $client_config        = $::cirrus_curator::params::client_config,
   $logging_config       = $::cirrus_curator::params::logging_config,
 ) inherits cirrus_curator::params {
