@@ -20,31 +20,13 @@
 #
 
 class cirrus_curator::config (
-  $config_source    = undef,
   $config_dir       = $::cirrus_curator::params::config_dir,
   $config_dir_purge = $::cirrus_curator::params::config_dir_purge,
-  $config_filename  = $::cirrus_curator::params::config_filename,
   $config_path      = $::cirrus_curator::params::config_path,
   $actions_dir      = $::cirrus_curator::params::actions_dir,
   $config_user      = $::cirrus_curator::params::config_user,
   $config_group     = $::cirrus_curator::params::config_group,
   $config_template  = $::cirrus_curator::params::config_template,
-  $hosts            = ['localhost'],
-  $port             = 9200,
-  $url_prefix       = undef,
-  $use_ssl          = false,
-  $certificate      = undef,
-  $client_cert      = undef,
-  $client_key       = undef,
-  $ssl_no_validate  = false,
-  $http_auth        = false,
-  $http_user        = undef,
-  $http_password    = undef,
-  $timeout          = 30,
-  $master_only      = $::cirrus_curator::params::master_only,
-  $log_level        = $::cirrus_curator::params::loglevel,
-  $log_file         = $::cirrus_curator::params::logfile,
-  $log_format       = $::cirrus_curator::params::logformat,
 )
 {
   File {
@@ -52,11 +34,28 @@ class cirrus_curator::config (
     group => $config_group,
   }
 
-  if ( $config_source != undef ) {
-    $config_content = file($config_source)
+  if $cirrus_curator::client_config == undef {
+    $_client_config = {
+      hosts       => ['localhost'],
+      port        => '9200',
+      use_ssl     => 'False',
+      timeout     => '30',
+      master_only => 'True'
+    }
   }
   else {
-    $config_content = template($config_template)
+    $_client_config = $cirrus_curator::client_config
+  }
+
+  if $cirrus_curator::logging_config == undef {
+    $_logging_config = {
+      loglevel  => 'INFO',
+      logfile   => '/var/log/curator.log',
+      logformat => 'default',
+    }
+  }
+  else {
+    $_logging_config = $cirrus_curator::logging_config
   }
 
   file { $config_dir:
@@ -68,7 +67,7 @@ class cirrus_curator::config (
 
   file { $config_path:
     ensure  => file,
-    content => $config_content,
+    content => template($config_template),
     require => File[$config_dir],
   }
 

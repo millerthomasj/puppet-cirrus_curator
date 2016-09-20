@@ -12,10 +12,10 @@ class cirrus_curator::params {
   $config_dir = '/etc/curator'
   $config_dir_purge = true
   $config_filename = 'curator.yml'
-  $config_path = "${curator_config_dir}/${curator_config_filename}"
+  $config_path = "${config_dir}/${config_filename}"
 
-  $config_template = 'cirrus_elasticsearch/curator.yml.erb'
-  $actions_dir = "${curator_config_dir}/actions.d"
+  $config_template = 'cirrus_curator/curator.yml.erb'
+  $actions_dir = "${config_dir}/actions.d"
   $config_user = 'root'
   $config_group = 'root'
   $cron_hour = 6

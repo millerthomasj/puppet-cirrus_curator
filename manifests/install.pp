@@ -18,8 +18,8 @@ class cirrus_curator::install
       }
     }
     default: {
-      $_package_name = $package_name
-      $_provider     = $provider
+      $_package_name = $cirrus_curator::package_name
+      $_provider     = $cirrus_curator::provider
     }
   }
 notify { "testing $cirrus_curator::manage_repo": }

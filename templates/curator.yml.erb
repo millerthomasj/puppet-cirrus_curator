@@ -1,26 +1,10 @@
----
-# Remember, leave a key empty if there is no value.
-# None will be a string, not a Python "NoneType".
+### MANAGED BY PUPPET ###
 client:
-<% if scope['cirrus_curator::client_config'] != undef -%> 
-  <% scope['cirrus_curator::client_config'].keys.sort.each do |key| -%>
-  <%= key %>: <%= scope['cirrus_curator::client_config'][key] %>
+  <% scope['cirrus_curator::config::_client_config'].keys.sort.each do |key| -%>
+  <%= key %>: <%= scope['cirrus_curator::config::_client_config'][key] %>
   <% end -%>
-<% else %>
-  hosts: ['localhost']
-  port: 9200
-  use_ssl: False
-  timeout: 30
-  master_only: True
-<% end -%>
 
 logging:
-<% if scope['cirrus_curator::logging_config'] != undef -%> 
-  <% scope['cirrus_curator::logging_config'].keys.sort.each do |key| -%>
-  <%= key %>: <%= scope['cirrus_curator::logging_config'][key] %>
+  <% scope['cirrus_curator::config::_logging_config'].keys.sort.each do |key| -%>
+  <%= key %>: <%= scope['cirrus_curator::config::_logging_config'][key] %>
   <% end -%>
-<% else %>
-  loglevel: 'INFO'
-  logfile: '/var/log/curator.log'
-  logformat: 'default'
-<% end -%>
