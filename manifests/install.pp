@@ -1,3 +1,8 @@
+# Class cirrus_curator::install
+#
+# Install the curator package.
+#
+
 class cirrus_curator::install
 {
   case ($cirrus_curator::manage_repo) {

@@ -1,4 +1,4 @@
-# == Define: cirrus_elasticsearch::curator::action_file
+# == Define: cirrus_curator::action
 #
 # Creates an Action File for Curator to manage Elasticsearch indices.
 #
@@ -19,12 +19,7 @@
 #  would be nested as the value of "content:". If both $content and $source
 #  are provided, only $content is used.
 #
-# [*source*]
-#  String. Provide a source file to be used as action file.
-#
-# [*cron_ensure*]
-#  String. The basic property that the resource should be in.
-#  Valid values are 'present' or 'absent'.
+# All other items will be documented inline or are self-explanatory
 #
 
 define cirrus_curator::action (

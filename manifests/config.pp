@@ -9,14 +9,27 @@
 #
 # === Parameters
 #
-# [*config_source*]
-#  String. Path on Puppet server to source YAML file for Curator config.
-#  If no config_source is supplied, this manifest defaults to using an ERB
-#  template to generate Curator's configuration file.
+# [*config_dir*]
+#  The directory to store the curator config file.
+#
+# [*config_dir_purge*]
+#  Purge the configdir prior to installing file.
+#
+# [*config_path*]
+#  Concatenation of config_dir and primary configuration filename.
 #
 # [*actions_dir*]
-#  String. Path of Curator's actions.d directory, which stores all of Curator's
+#  Path of Curator's actions.d directory, which stores all of Curator's
 #  action files.
+#
+# [*config_user*]
+#  Who owns the configuration file.
+#
+# [*config_group*]
+#  Which group owns the configuration file.
+#
+# [*config_template*]
+#  Template file to use in order to build the curator.yml file.
 #
 
 class cirrus_curator::config (

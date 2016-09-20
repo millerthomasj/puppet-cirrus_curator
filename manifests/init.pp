@@ -1,32 +1,42 @@
 # == Class: cirrus_curator
 #
-# Installs elasticsearch-curator and provides a definition to schedule jobs
-#
+# Installs python-elasticsearch-curator and provides a definition to schedule actions
 #
 # === Parameters
 #
 # [*ensure*]
-#   String.  Version of curator to be installed
-#   Default: latest
-#
-# [*jobs*]
-#
-#   Hash. Manage your jobs in hiera (or manifest).
-#   Default: {}
-#
-# [*manage_repo*]
-#   Boolean. Enable repo management by enabling the official repositories.
-#   Default: false
+#   Version of curator to be installed
 #
 # [*provider*]
-#   String.  Name of the provider to install the package with.
-#            If not specified will use system's default provider.
-#   Default: undef
+#   Which provider to use for package installation.
+#
+# [*package_name*]
+#   Name of the package to be installed.
+#
+# [*manage_repo*]
+#   Enable repo management by enabling the official repositories.
 #
 # [*repo_version*]
-#   String.  Elastic repositories  are versioned per major release (2, 3)
-#            select here which version you want.
-#   Default: false
+#   Elastic repositories  are versioned per major release (2, 3)
+#    select here which version you want.
+#
+# [*bin_file*]
+#   Where the curator bin file lives.
+#
+# [*config_path*]
+#   Where the curator configuration file is stored.
+#
+# [*actions_dir*]
+#   Where the actions files are stored for curator.
+#
+# [*client_config*]
+#   A hash that can be used to create a customized curator config file.
+#
+# [*logging_config*]
+#   A hash that can be used to create a customized curator config file.
+#
+# [*actions*]
+#  Manage your jobs in hiera (or manifest).
 #
 # === Examples
 #
@@ -51,6 +61,7 @@ class cirrus_curator (
   $actions_dir          = $::cirrus_curator::params::actions_dir,
   $client_config        = $::cirrus_curator::params::client_config,
   $logging_config       = $::cirrus_curator::params::logging_config,
+  $actions              = $::cirrus_curator::params::actions,
 ) inherits cirrus_curator::params {
 
   if ( $ensure != 'latest' or $ensure != 'absent' ) {
@@ -67,4 +78,7 @@ class cirrus_curator (
 
   class { '::cirrus_curator::install': }->
   class { '::cirrus_curator::config': }
+
+  validate_hash($actions)
+  create_resources('cirrus_curator::action', $actions)
 }
