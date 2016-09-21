@@ -1,7 +1,6 @@
-
 source 'https://rubygems.org'
 
-gem 'puppetlabs_spec_helper', :require => false
+gem 'puppetlabs_spec_helper', '~> 1.1.0', :require => false
 gem 'rspec-puppet', '~> 2.3.0', :require => false
 
 gem 'puppet-lint-absolute_classname-check'
