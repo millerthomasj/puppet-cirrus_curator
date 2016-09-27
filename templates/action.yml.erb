@@ -11,6 +11,14 @@ actions:
       <% if @action == 'delete_indices' %>ignore_empty_list: True<% end %>
       <% if @action == 'forcemerge' %>max_num_segments: <%= @max_num_segments %>
       delay: <%= @delay %><% end %>
+      <% if @action == 'snapshot' %>repository: <%= @repository %>
+      name: <%= @snapshot_name %>
+      ignore_unavailable: False
+      include_global_state: True
+      partial: False
+      wait_for_completion: True
+      skip_repo_fs_check: False<% end %>
+      <% if @action == 'delete_snapshot' %>repository: <%= @repository %><% end %>
       timeout_override: <%= @request_timeout %>
       continue_if_exception: False
       disable_action: False

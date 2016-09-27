@@ -43,6 +43,10 @@ define cirrus_curator::action (
   $max_num_segments        = 2,
   $request_timeout         = '',
 
+  # Snapshot and Delete_Snapshot Options
+  $repository              = undef,
+  $snapshot_name           = '',
+
   # Cron Params
   $cron_ensure                  = 'present',
   $cron_hour = 6,
