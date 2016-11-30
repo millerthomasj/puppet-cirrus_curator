@@ -67,4 +67,13 @@ actions:
       unit: <%= @time_unit %>
       unit_count: <%= @older_than %>
       exclude:
+    <% if @action == 'snapshot' %>
+    - filtertype: age
+      source: <%= @source %>
+      direction: younger
+      timestring: '<%= @timestring %>'
+      unit: days
+      unit_count: <%= @newer_than %>
+      exclude:
+    <% end %>
     <% end %>
