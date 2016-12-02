@@ -1,0 +1,8 @@
+/var/log/elasticsearch/curator.log {
+    daily
+    missingok
+    compress
+    delaycompress
+    copytruncate
+    notifempty
+}

@@ -63,12 +63,19 @@ class cirrus_curator::config (
   if $cirrus_curator::logging_config == undef {
     $_logging_config = {
       loglevel  => 'INFO',
-      logfile   => '/var/log/curator.log',
+      logfile   => '/var/log/elasticsearch/curator.log',
       logformat => 'default',
     }
   }
   else {
     $_logging_config = $cirrus_curator::logging_config
+  }
+
+  file { '/etc/logrotate.d/curator':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/cirrus_curator/logrotate/curator',
   }
 
   file { $config_dir:
